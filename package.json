@@ -2,7 +2,7 @@
   "main": "./build/snakeSketch.js",
   "author": "Alexander Mongolin (DaGuT)",
   "name": "p5-snake",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Socket multiplayer snake written with p5.js library",
   "license": "MIT",
   "repository": {
