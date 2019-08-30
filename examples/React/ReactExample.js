@@ -5,7 +5,7 @@ import './ReactExample.css';
 
 class SnakeBlock extends React.Component {
   componentDidMount() {
-    new p5(snakeSketch(snakeId, 'https://snake.dagut.ru:8080'), 'Snake'); //your server should be be put instead of mine
+    new p5(snakeSketch('Snake', 'https://snake.dagut.ru:8080')); //your server should be be put instead of mine
   }
 
   render() {
