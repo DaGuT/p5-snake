@@ -1,0 +1,38 @@
+{
+  "main": "./build/snakeSketch.js",
+  "author": "Alexander Mongolin (DaGuT)",
+  "name": "p5-snake",
+  "version": "1.0.0",
+  "description": "Socket multiplayer snake written with p5.js library",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaGuT/p5-snake"
+  },
+  "keywords": [
+    "snake",
+    "npm",
+    "package",
+    "dagut",
+    "p5",
+    "animation",
+    "socket.io"
+  ],
+  "dependencies": {
+    "p5": "^0.7.2",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7"
+  },
+  "scripts": {
+    "build": "webpack",
+    "npm:publish": "webpack && npm publish"
+  }
+}
