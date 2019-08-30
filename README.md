@@ -37,7 +37,7 @@ Simply run command "node snake.js" in that folder and server will be started. If
 
 ___
 
-If you want to rebuild module after you made some changes you have to options:
+If you want to rebuild module after you made some changes you have two options:
 
 1) For browser go to webpack.config.js and comment line
 ```
