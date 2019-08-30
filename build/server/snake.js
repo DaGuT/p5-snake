@@ -6,8 +6,9 @@ var port = process.env.PORT || 8080;
 
 //sert loading
 var options = {
-  key: fs.readFileSync('./sslforfree/private.key'),
-  cert: fs.readFileSync('./sslforfree/certificate.crt'),
+  //uncomment if you have keys
+  // key: fs.readFileSync('./sslforfree/private.key'),
+  // cert: fs.readFileSync('./sslforfree/certificate.crt'),
 };
 
 var server = require('https').createServer(options).listen(port, '0.0.0.0');

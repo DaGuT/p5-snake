@@ -148,4 +148,6 @@ function snakeSketch(snakeElementId_, server) {
   }
 }
 
+window.snakeSketch = snakeSketch; //for browser
+
 export default snakeSketch;
