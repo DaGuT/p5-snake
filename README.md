@@ -8,12 +8,16 @@ npm install p5-snake
 or use built file (description below)
 
 ______
+# Examples
 
 Examples can be found at https://github.com/DaGuT/p5-snake/tree/master/examples
 
 There are both: react example and pure browser example with built file
 
 ____
+
+# Pure HTML Usage
+
 To set it running in html use built version from html examples
 
 Import it and p5.js
@@ -28,6 +32,7 @@ Or simply rewrite example that I have
 
 ___
 
+# About server
 Server files can be found under build/server directory, but feel free to use my server while it's running.
 
 To run server you need to have install "express" and "socket.io"
@@ -36,7 +41,7 @@ Simply run command "node snake.js" in that folder and server will be started. If
 
 
 ___
-
+# Rebuilding
 If you want to rebuild module after you made some changes you have two options:
 
 1) For browser go to webpack.config.js and comment line
