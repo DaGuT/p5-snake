@@ -10,18 +10,20 @@ module.exports = {
     ? false
     : 'source-map',
   entry: './src/sketch.js',
+  target: "web",
   output: {
     path: path.join(__dirname, '/build'),
     filename: 'snakeSketch.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2' //comment this to build for browser
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: isProd
+  plugins: [new UglifyJsPlugin({
+      uglifyOptions: {
+        beautify: false,
+        ecma: 5,
+        compress: true,
+        comments: false
       }
-    })
-  ],
+    })],
   module: {
     rules: [
       {
@@ -29,7 +31,16 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ["@babel/preset-env"]
+            "presets": [
+              [
+                "@babel/preset-env", {
+                  "targets": {
+                    "browsers": "last 2 versions, ie 10-11"
+                  },
+                  "modules": false
+                }
+              ]
+            ]
           }
         },
         include: path.join(__dirname, 'src'),
