@@ -7,6 +7,9 @@ npm install p5-snake
 
 or use built file (description below)
 
+____
+# Demo
+Demo can be found at http://demos.dagut.ru/npmsnakedemo/
 ______
 # Examples
 
