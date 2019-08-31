@@ -57,7 +57,7 @@ npm run build
 ```
 and use file from build folder
 
-2) run 
+2) For node just run 
 ```
 npm run build
 ```
