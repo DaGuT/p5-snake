@@ -5,7 +5,11 @@ import './ReactExample.css';
 
 class SnakeBlock extends React.Component {
   componentDidMount() {
-    new p5(snakeSketch('Snake', 'https://snake.dagut.ru:8080')); //your server should be be put instead of mine
+    this.sketch = new p5(snakeSketch('Snake', 'https://snake.dagut.ru:8080'),'Snake'); //your server should be be put instead of mine
+  }
+
+  componentWillUnmount(){
+    this.sketch.close(); //dont forget to close socket if you have router or if you unomunt component in any case, but closing tab
   }
 
   render() {

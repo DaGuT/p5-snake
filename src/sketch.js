@@ -3,7 +3,6 @@ import io from 'socket.io-client';
 import Snake from './snake.js';
 import Food from './food.js';
 
-
 /**
  * snakeSketch - This is sketch that is returned by this function with keeping full size of its parent element, you then can spawn it anywhere by just calling. E.g.  if you want to spawn snake canvas in <div id="Snake"></div>, then add "let snakeId='Snake'; new p(snakeSketch(snakeId),snakeId);"
  *
@@ -12,7 +11,7 @@ import Food from './food.js';
  */
 function snakeSketch(snakeElementId_, server) {
 
-  return(p) => {
+  return (p) => {
 
     let snake; //our snake
     let snakes = []; //others' snakes segments
@@ -28,13 +27,13 @@ function snakeSketch(snakeElementId_, server) {
      */
 
     p.setup = () => {
-      //we create canvas
-      //and make its size occupy parents element
+      //we create canvas and make its size occupy parents element
       p.createCanvas(document.querySelector('#' + snakeElementId).clientWidth, document.querySelector('#' + snakeElementId).clientHeight);
 
-      //this is handler that should prevent canvas from updating and taking computing power when it's not in viewpoin
+      // this is handler that should prevent canvas from updating and taking computing
+      // power when it's not in viewpoin
       if (onVisibilityChange) { //we only do this if we have this function included
-        var handler = onVisibilityChange(document.querySelector('#' + snakeElementId), function(visibility) {
+        var handler = onVisibilityChange(document.querySelector('#' + snakeElementId), function (visibility) {
           if (visibility) {
             p.loop();
           } else {
@@ -42,26 +41,33 @@ function snakeSketch(snakeElementId_, server) {
           }
         });
 
-        //this is will check if visibility is changed upon few events
-        //I'm not using intersection API as I want to support some older browsers
+        // this is will check if visibility is changed upon few events I'm not using
+        // intersection API as I want to support some older browsers
         window.addEventListener('DOMContentLoaded load resize scroll', handler);
       }
 
-      //------------------------------------------------------------------------------ MY SETUP BELOW
-      // mobile phones are not that powerful, so we make different snake size
+      // -----------------------------------------------------------------------------
+      // - MY SETUP BELOW mobile phones are not that powerful, so we make different
+      // snake size
       if ((typeof window.orientation !== 'undefined')) {
         snake = new Snake(3, 10, 3, 20, 30, p);
       } else {
         snake = new Snake(3, 10, 3, 20, 150, p);
       }
 
-      //if we want to work is multiplayer snake, everything (sockets) is inside of this if
+      // if we want to work is multiplayer snake, everything (sockets) is inside of
+      // this if
       if (server) {
 
-        food = new Food(-1000, -1000, 20, {r:0,g:0,b:0}, p); //this is outside of field, but it prevents the game from falling down
+        food = new Food(-1000, -1000, 20, {
+          r: 0,
+          g: 0,
+          b: 0
+        }, p); //this is outside of field, but it prevents the game from falling down
         //we're trying to go online, so we'll wait for server to spawn new food
 
         socket = io(server); //we connect to the server
+        p.socket = socket;
 
         socket.on('connect', () => {
           console.log('connected');
@@ -88,19 +94,38 @@ function snakeSketch(snakeElementId_, server) {
           snake.socket = undefined;
         })
 
-        socket.on('spawn food',(_food)=>{
-          food = new Food(_food.x,_food.y,_food.r,{r:_food.color.r,g:_food.color.g,b:_food.color.b},p);
+        socket.on('spawn food', (_food) => {
+          food = new Food(_food.x, _food.y, _food.r, {
+            r: _food.color.r,
+            g: _food.color.g,
+            b: _food.color.b
+          }, p);
         })
 
-        socket.on('connect_error', ()=> {
-          food = new Food(p.random(0, p.width), p.random(0, p.height), 20, {r:p.random(1, 255), g:p.random(1, 255), b:p.random(1, 255)},p);
+        socket.on('connect_error', () => {
+          food = new Food(p.random(0, p.width), p.random(0, p.height), 20, {
+            r: p.random(1, 255),
+            g: p.random(1, 255),
+            b: p.random(1, 255)
+          }, p);
         })
 
       } else { //offline only mode
-        food = new Food(p.random(0, p.width), p.random(0, p.height), 20, {r:p.random(1, 255), g:p.random(1, 255), b:p.random(1, 255)},p);
+        food = new Food(p.random(0, p.width), p.random(0, p.height), 20, {
+          r: p.random(1, 255),
+          g: p.random(1, 255),
+          b: p.random(1, 255)
+        }, p);
       }
     }
-
+    //function to kill socket. Should be used in componentWillUnmount
+    p.closeSocket = () => {
+      if (p.socket) {
+        p
+          .socket
+          .close();
+      }
+    }
     /**
      * on window resize we resize canvas
      */
@@ -124,27 +149,24 @@ function snakeSketch(snakeElementId_, server) {
         //we draw online players
         p.textSize(32);
         p.noStroke();
-        p.text(
-          curOnline === -1
+        p.text(curOnline === -1
           ? 'Snake server is down'
-          : `${curOnline} snakes online`,
-        10,
-        30);
+          : `${curOnline} snakes online`, 10, 30);
 
         socket.emit('snake update', snake.generateJSON()); //we send our updated snake. Needs to be changed so that we dont send the data if we are not active
-        //now we draw other snakes
-
-        //We'll be drowing snake by snake
+        //now we draw other snakes We'll be drowing snake by snake
         for (let snk in snakes) {
           if (snk !== socket.id) {
             snakes[snk].forEach((segment) => {
-              snake.segments[0].draw.call(segment);
+              snake
+                .segments[0]
+                .draw
+                .call(segment);
             });
           }
         }
       }
     }
-
   }
 }
 
