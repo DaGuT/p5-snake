@@ -9,7 +9,7 @@ class SnakeBlock extends React.Component {
   }
 
   componentWillUnmount(){
-    this.sketch.close(); //dont forget to close socket if you have router or if you unomunt component in any case, but closing tab
+    this.sketch.closeSocket(); //dont forget to close socket if you have router or if you unomunt component in any case, but closing tab
   }
 
   render() {
