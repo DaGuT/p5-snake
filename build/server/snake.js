@@ -6,9 +6,9 @@ var port = process.env.PORT || 8080;
 
 //sert loading
 var options = {
-  //uncomment if you have keys
-  // key: fs.readFileSync('./sslforfree/private.key'),
-  // cert: fs.readFileSync('./sslforfree/certificate.crt'),
+  //uncomment if you have keys, comment if you dont
+  key: fs.readFileSync('./sslforfree/private.key'),
+  cert: fs.readFileSync('./sslforfree/certificate.crt'),
 };
 
 var server = require('https').createServer(options).listen(port, '0.0.0.0');
@@ -31,6 +31,31 @@ var foodTimer; //this timer will be used in case if noone ate food which means i
 let maxX = 1920;
 let maxY = 700;
 var food;
+
+//array of possible colors for offlien usage
+const colors = [
+  "#f44336",
+  "#e91e63",
+  "#9c27b0",
+  "#673ab7",
+  "#3f51b5",
+  "#2196f3",
+  "#03a9f4",
+  "#00bcd4",
+  "#009688",
+  "#4CAF50",
+  "#8BC34A",
+  "#CDDC39",
+  "#FFEB3B",
+  "#FFC107",
+  "#FF9800",
+  "#FF5722"
+];
+
+function getRandColor() {
+  return colors[Math.floor(Math.random()*colors.length)];
+}
+
 makeFood(); //this will asign food real food info and alsso attach a interval to respawn food every 10 secs
 
 //for each connection there is its own 'object'
@@ -116,11 +141,7 @@ function getRandomFood() {
     x: rand(0, maxX),
     y: rand(0, maxY),
     r: 20,
-    color: {
-      r: rand(0, 255),
-      g: rand(0, 255),
-      b: rand(0, 255)
-    }
+    color: getRandColor()
   };
 }
 

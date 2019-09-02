@@ -1,7 +1,7 @@
 import onVisibilityChange from './onVisibilityChange'
 import io from 'socket.io-client';
 import Snake from './snake.js';
-import Food from './food.js';
+import Food, {colors, getRandColor} from './food.js';
 
 /**
  * snakeSketch - This is sketch that is returned by this function with keeping full size of its parent element, you then can spawn it anywhere by just calling. E.g.  if you want to spawn snake canvas in <div id="Snake"></div>, then add "let snakeId='Snake'; new p(snakeSketch(snakeId),snakeId);"
@@ -59,11 +59,7 @@ function snakeSketch(snakeElementId_, server) {
       // this if
       if (server) {
 
-        food = new Food(-1000, -1000, 20, {
-          r: 0,
-          g: 0,
-          b: 0
-        }, p); //this is outside of field, but it prevents the game from falling down
+        food = new Food(-1000, -1000, 20, getRandColor(), p); //this is outside of field, but it prevents the game from falling down
         //we're trying to go online, so we'll wait for server to spawn new food
 
         socket = io(server); //we connect to the server
@@ -95,27 +91,15 @@ function snakeSketch(snakeElementId_, server) {
         })
 
         socket.on('spawn food', (_food) => {
-          food = new Food(_food.x, _food.y, _food.r, {
-            r: _food.color.r,
-            g: _food.color.g,
-            b: _food.color.b
-          }, p);
+          food = new Food(_food.x, _food.y, _food.r, _food.color, p);
         })
 
         socket.on('connect_error', () => {
-          food = new Food(p.random(0, p.width), p.random(0, p.height), 20, {
-            r: p.random(1, 255),
-            g: p.random(1, 255),
-            b: p.random(1, 255)
-          }, p);
+          food = new Food(p.random(0, p.width), p.random(0, p.height), 20, getRandColor(), p);
         })
 
       } else { //offline only mode
-        food = new Food(p.random(0, p.width), p.random(0, p.height), 20, {
-          r: p.random(1, 255),
-          g: p.random(1, 255),
-          b: p.random(1, 255)
-        }, p);
+        food = new Food(p.random(0, p.width), p.random(0, p.height), 20, getRandColor(), p);
       }
     }
     //function to kill socket. Should be used in componentWillUnmount
@@ -139,8 +123,12 @@ function snakeSketch(snakeElementId_, server) {
     p.draw = () => {
       p.clear();
       //p.background('rgba(0,0,0,0)');
-      snake.draw(); //we draw our own snake
       snake.eat(food);
+      snake.draw(); //we draw our own snake
+      if (snake.checkIfDied('self')) {
+        console.log('died');
+        snake.die();
+      }
 
       food.draw();
 
@@ -160,8 +148,10 @@ function snakeSketch(snakeElementId_, server) {
             snakes[snk].forEach((segment) => {
               snake
                 .segments[0]
-                .draw
-                .call(segment);
+                .draw(segment);
+              if (snake.checkIfDied(segment)) {
+                snake.die();
+              }
             });
           }
         }

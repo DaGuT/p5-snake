@@ -2,7 +2,7 @@
   "main": "./build/snakeSketch.js",
   "author": "Alexander Mongolin (DaGuT)",
   "name": "p5-snake",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Socket multiplayer snake written with p5.js library",
   "license": "MIT",
   "repository": {
@@ -20,13 +20,14 @@
     "socket.io"
   ],
   "dependencies": {
-    "socket.io": "^2.1.1",
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "babel-loader": "^8.0.6",
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7"

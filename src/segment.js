@@ -17,7 +17,7 @@ class Segment {
    * @param  {float} params.col segment H color
    * @param  {(string|object)} params.next Specifies object that should be followed. It can be string="mouse" or one of other segments
    */
-  constructor(params,p) {
+  constructor(params, p) {
     //start and end points
     this.a = p.createVector(params.x, params.y);
     this.b = p.createVector();
@@ -31,18 +31,15 @@ class Segment {
     //stroke width for making it snake like
     this.sw = params.sw;
 
-    this.col = params.col || {
-      r: 255,
-      g: 255,
-      b: 255
-    };
+    this.col = params.col || '#fff';
 
     //we calculate end point
     this.calculateB();
 
-    //in touch mode we need to create special ball that will react on tilt instead of mouse
-    if (params.next === 'touch') {
-      this.ball = new TouchBall(params.x, params.y, p);
+    // in touch mode we need to create special ball that will react on tilt instead
+    // of mouse
+    if (params.next === 'touch' || params.next === 'mouse') {
+      this.ball = new TouchBall(params.x, params.y, params.next, p);
     }
 
     this.next = params.next;
@@ -58,7 +55,9 @@ class Segment {
   calculateB() {
     let dx = this.len * Math.cos(this.angle);
     let dy = this.len * Math.sin(this.angle);
-    this.b.set(this.a.x + dx, this.a.y + dy);
+    this
+      .b
+      .set(this.a.x + dx, this.a.y + dy);
   }
 
   /**
@@ -71,23 +70,31 @@ class Segment {
     //which point to follow
     switch (this.next) {
       case 'mouse':
-        target = this.p.createVector(this.p.mouseX, this.p.mouseY);
-        break;
       case 'touch':
-        this.ball.update();
-        target = this.p.createVector(this.ball.x, this.ball.y);
+        this
+          .ball
+          .update();
+        target = this
+          .p
+          .createVector(this.ball.x, this.ball.y);
         break;
       default:
-        target = this.p.createVector(this.next.a.x, this.next.a.y);
+        target = this
+          .p
+          .createVector(this.next.a.x, this.next.a.y);
         break;
     }
 
-    let dir = this.p.createVector(target.x - this.a.x, target.y - this.a.y); //p.Vector.sub(target, this.a);
+    let dir = this
+      .p
+      .createVector(target.x - this.a.x, target.y - this.a.y); //p.Vector.sub(target, this.a);
     this.angle = dir.heading();
     dir.setMag(this.len);
     dir.mult(-1);
 
-    this.a = this.p.createVector(target.x + dir.x, target.y + dir.y); //p.Vector.add(target, dir);
+    this.a = this
+      .p
+      .createVector(target.x + dir.x, target.y + dir.y); //p.Vector.add(target, dir);
 
   }
 
@@ -104,15 +111,28 @@ class Segment {
    * draw - draw functino of segment
    *
    */
-  draw() {
-    var p = window.p;
+  draw(segment) {
 
-    let col= this.col ? this.p.color(this.col.r, this.col.g , this.col.b) : this.p.color(255,255,255);
-
+    if (!segment) //small hack that I dont like
+      segment=this;
+    
+    let col = this.col
+      ? this
+        .p
+        .color(segment.col)
+      : this
+        .p
+        .color(255, 255, 255);
     //we draw line
-    this.p.stroke(col); //it's for campability with old clients
-    this.p.strokeWeight(this.sw);
-    this.p.line(this.a.x, this.a.y, this.b.x, this.b.y);
+    this
+      .p
+      .stroke(col); //it's for campability with old clients
+    this
+      .p
+      .strokeWeight(segment.sw);
+    this
+      .p
+      .line(segment.a.x, segment.a.y, segment.b.x, segment.b.y);
 
   }
 
