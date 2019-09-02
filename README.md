@@ -62,3 +62,8 @@ and use file from build folder
 npm run build
 ```
 replace file from build with the one you have in /node_modules or just copy/paste and import
+
+____
+# Change Log
+
+02.09.2019 v1.1.0 - limited maximum speed + added possibility to die and kill other snakes
